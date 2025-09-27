@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abdalluh Essam - Flutter Developer</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #0066cc;
+            --secondary-color: #00b4d8;
+            --accent-color: #90e0ef;
+            --text-primary: #2c3e50;
+            --text-secondary: #7f8c8d;
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-card: #ffffff;
+            --border-color: #e9ecef;
+            --shadow: 0 8px 30px rgba(0,0,0,0.1);
+            --shadow-hover: 0 12px 40px rgba(0,0,0,0.15);
+            --transition: all 0.3s ease;
+        }
+
+        [data-theme="dark"] {
+            --text-primary: #ecf0f1;
+            --text-secondary: #bdc3c7;
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2c2c2c;
+            --bg-card: #2c2c2c;
+            --border-color: #3a3a3a;
+            --shadow: 0 8px 30px rgba(0,0,0,0.3);
+            --shadow-hover: 0 12px 40px rgba(0,0,0,0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--text-primary);
+            background-color: var(--bg-primary);
+            transition: var(--transition);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+
+        [data-theme="dark"] nav {
+            background: rgba(26, 26, 26, 0.95);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after {
+            width: 100%;
+        }
+
+        .theme-toggle {
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg-secondary);
+            transform: rotate(180deg);
+        }
+
+        .mobile-menu {
+            display: none;
+            background: none;
+            border: none;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section {
+            display: none;
+            padding: 4rem 0;
+            min-height: calc(100vh - 80px);
+        }
+
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Home Section */
+        .hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-height: calc(100vh - 80px);
+            gap: 4rem;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-content .title {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero-content .summary {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            max-width: 600px;
+            line-height: 1.8;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            text-decoration: none;
+            border-radius: 50%;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+            font-size: 1.2rem;
+        }
+
+        .social-links a:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .hero-image {
+            flex: 1;
+            text-align: center;
+        }
+
+        .profile-img {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            object-fit: cover;
+            box-shadow: var(--shadow);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 5px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 1px solid var(--border-color);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-secondary);
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .skill-item:hover {
+            background: var(--accent-color);
+            transform: translateX(10px);
+        }
+
+        .skill-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+            margin-left: 80px;
+        }
+
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -65px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            box-shadow: 0 0 0 4px var(--bg-primary);
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .timeline-content:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .timeline-date {
+            color: var(--secondary-color);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Projects */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .project-card {
+            background: var(--bg-card);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .project-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+
+        .project-content {
+            padding: 1.5rem;
+        }
+
+        .project-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .project-description {
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .project-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .project-link:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        /* Contact Form */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 2rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-card);
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .contact-item:hover {
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            min-width: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-family: inherit;
+            transition: var(--transition);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        /* Resume Section */
+        .resume-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .download-cv {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            margin-top: 1rem;
+        }
+
+        .download-cv:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--bg-primary);
+                flex-direction: column;
+                padding: 2rem;
+                box-shadow: var(--shadow);
+                border-top: 1px solid var(--border-color);
+            }
+
+            .nav-links.show {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: block;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                gap: 2rem;
+                padding-top: 2rem;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .profile-img {
+                width: 250px;
+                height: 250px;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+
+            .timeline {
+                margin-left: 1rem;
+            }
+
+            .timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item {
+                margin-left: 50px;
+            }
+
+            .timeline-item::before {
+                left: -50px;
+            }
+
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loader {
+            display: none;
+            border: 3px solid var(--border-color);
+            border-top: 3px solid var(--primary-color);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">Abdalluh Essam</a>
+            <ul class="nav-links">
+                <li><a href="#home" class="nav-link active">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#experience" class="nav-link">Experience</a></li>
+                <li><a href="#projects" class="nav-link">Projects</a></li>
+                <li><a href="#resume" class="nav-link">Resume</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+                <li><button class="theme-toggle" title="Toggle theme"><i class="fas fa-moon"></i></button></li>
+            </ul>
+            <button class="mobile-menu"><i class="fas fa-bars"></i></button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="section active">
+            <div class="container">
+                <div class="hero">
+                    <div class="hero-content">
+                        <h1>Abdalluh Essam</h1>
+                        <div class="title">Software Engineer – Flutter Developer</div>
+                        <p class="summary">
+                            Mobile Application Developer specialized in Flutter & Dart, crafting high-performance, 
+                            cross-platform applications with beautiful UI and seamless UX. Passionate problem-solver 
+                            with solid UI/UX knowledge, eager to deliver impactful mobile solutions.
+                        </p>
+                        <div class="social-links">
+                            <a href="mailto:abdalluh.essam@outlook.com" title="Email"><i class="fas fa-envelope"></i></a>
+                            <a href="https://linkedin.com/in/abdalluh-essam" target="_blank" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                            <a href="https://github.com/AbdalluhEssam" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                            <a href="https://abdalluh-essam.com" target="_blank" title="Portfolio"><i class="fas fa-globe"></i></a>
+                        </div>
+                        <div class="cta-buttons">
+                            <a href="#projects" class="btn btn-primary nav-link">
+                                <i class="fas fa-rocket"></i>
+                                View My Projects
+                            </a>
+                            <a href="#contact" class="btn btn-outline nav-link">
+                                <i class="fas fa-phone"></i>
+                                Get In Touch
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hero-image">
+                        <div class="profile-img" style="display: flex; align-items: center; justify-content: center; color: white; font-size: 4rem;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="section">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-grid">
+                    <div class="card">
+                        <h3><i class="fas fa-graduation-cap"></i> Education</h3>
+                        <div class="timeline-content">
+                            <div class="timeline-date">2020 – 2024</div>
+                            <div class="timeline-title">Bachelor's Degree – Management Information Systems</div>
+                            <p>Obour Higher Institute for Management, Computers & Information Systems</p>
+                            <p><strong>Grade: Excellent with Honors (91.74%)</strong></p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3><i class="fas fa-trophy"></i> Awards & Certificates</h3>
+                        <div style="margin-top: 1rem;">
+                            <div class="skill-item">
+                                <i class="fas fa-award skill-icon"></i>
+                                <div>
+                                    <strong>Geniuses Forum Competition Award</strong>
+                                    <p>Ministry of Higher Education (2022)</p>
+                                </div>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-certificate skill-icon"></i>
+                                <div>Flutter & Advanced Courses (GDSC, ITI, Udemy)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="margin-top: 2rem;">
+                    <h3><i class="fas fa-code"></i> Technical Skills</h3>
+                    <div class="skills-grid">
+                        <div class="skill-item">
+                            <i class="fab fa-flutter skill-icon"></i>
+                            <span>Flutter & Dart</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-java skill-icon"></i>
+                            <span>Java & Kotlin</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-cubes skill-icon"></i>
+                            <span>Bloc, Cubit, GetX</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-database skill-icon"></i>
+                            <span>SQLite, Hive, SharedPreferences</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-fire skill-icon"></i>
+                            <span>Firebase Services</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-plug skill-icon"></i>
+                            <span>REST API Integration</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-project-diagram skill-icon"></i>
+                            <span>Clean Architecture, MVVM</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fab fa-git-alt skill-icon"></i>
+                            <span>Git & GitHub</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-rocket skill-icon"></i>
+                            <span>CI/CD (GitHub Actions)</span>
+                        </div>
+                        <div class="skill-item">
+                            <i class="fas fa-language skill-icon"></i>
+                            <span>Arabic & English</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="section">
+            <div class="container">
+                <h2 class="section-title">Professional Experience</h2>
+                <div class="timeline">
+                    <div class="timeline-item animate-on-scroll">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Aug 2022 – Present</div>
+                            <div class="timeline-title">Software Engineer – Saudi Gulf Group</div>
+                            <p>Built high-performance Flutter applications with seamless backend integration. Developed cross-platform mobile solutions serving thousands of users with excellent performance and user experience.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item animate-on-scroll">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Aug 2024 – Dec 2024</div>
+                            <div class="timeline-title">Teaching Assistant – Obour Institute</div>
+                            <p>Supported students in programming courses and developed the "OI Tawasol" communication app to enhance student-faculty interaction and campus connectivity.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item animate-on-scroll">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Sep 2023 – 2024</div>
+                            <div class="timeline-title">Flutter Coach – GDSC Obour Institute</div>
+                            <p>Mentored students in Flutter development, conducted workshops, and led hands-on coding sessions to build practical mobile development skills.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item animate-on-scroll">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Aug 2022 – 2024</div>
+                            <div class="timeline-title">Advisor – OI Robotics</div>
+                            <p>Provided technical guidance for robotics projects and programming initiatives within the university robotics club.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-item animate-on-scroll">
+                        <div class="timeline-content">
+                            <div class="timeline-date">Jul 2022 – Aug 2023</div>
+                            <div class="timeline-title">Vice President – OI Robotics</div>
+                            <p>Led robotics club activities, organized technical events, and coordinated programming workshops for students interested in robotics and automation.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card animate-on-scroll">
+                        <div class="project-image">
+                            <i class="fas fa-tshirt"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Quick Wash (Avnology)</h3>
+                            <p class="project-description">
+                                Premium laundry service application with real-time tracking, payment integration, 
+                                and seamless user experience. Features include order management, GPS tracking, and push notifications.
+                            </p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-google-play"></i>
+                                    Google Play
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-app-store"></i>
+                                    App Store
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card animate-on-scroll">
+                        <div class="project-image">
+                            <i class="fas fa-truck"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Quick Wash Driver</h3>
+                            <p class="project-description">
+                                Companion driver application for Quick Wash service with route optimization, 
+                                real-time order updates, and driver performance analytics.
+                            </p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-app-store"></i>
+                                    App Store
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card animate-on-scroll">
+                        <div class="project-image">
+                            <i class="fas fa-university"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">OI Tawasol</h3>
+                            <p class="project-description">
+                                University communication app connecting students and faculty with features like 
+                                announcements, schedules, grades, and campus navigation.
+                            </p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-google-play"></i>
+                                    Google Play
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-app-store"></i>
+                                    App Store
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card animate-on-scroll">
+                        <div class="project-image">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">OI AnyWhere</h3>
+                            <p class="project-description">
+                                Graduation project focused on automation for education. Smart campus solution 
+                                with IoT integration, automated attendance, and intelligent resource management.
+                            </p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-github"></i>
+                                    View Code
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-card animate-on-scroll">
+                        <div class="project-image">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="project-content">
+                            <h3 class="project-title">Glus Family</h3>
+                            <p class="project-description">
+                                Comprehensive ERP and E-commerce platform with inventory management, 
+                                customer relations, and integrated payment systems.
+                            </p>
+                            <div class="project-links">
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-google-play"></i>
+                                    Google Play
+                                </a>
+                                <a href="#" class="project-link">
+                                    <i class="fab fa-app-store"></i>
+                                    App Store
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Resume Section -->
+        <section id="resume" class="section">
+            <div class="container">
+                <div class="resume-header">
+                    <h2 class="section-title">Resume</h2>
+                    <p style="color: var(--text-secondary); font-size: 1.1rem; max-width: 600px; margin: 0 auto;">
+                        Download my complete CV to learn more about my professional journey, 
+                        technical skills, and achievements in mobile application development.
+                    </p>
+                    <a href="#" class="download-cv" onclick="downloadCV()">
+                        <i class="fas fa-download"></i>
+                        Download CV (PDF)
+                    </a>
+                </div>
+
+                <div class="about-grid" style="margin-top: 3rem;">
+                    <div class="card">
+                        <h3><i class="fas fa-briefcase"></i> Professional Summary</h3>
+                        <p style="margin-top: 1rem; line-height: 1.8;">
+                            Experienced Flutter developer with 2+ years in mobile app development. 
+                            Proven track record of delivering high-quality applications with excellent 
+                            user experience and performance optimization. Strong background in clean 
+                            architecture and modern development practices.
+                        </p>
+                    </div>
+
+                    <div class="card">
+                        <h3><i class="fas fa-chart-line"></i> Key Achievements</h3>
+                        <div style="margin-top: 1rem;">
+                            <div class="skill-item">
+                                <i class="fas fa-mobile-alt skill-icon"></i>
+                                <span>5+ Mobile Apps Published</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-users skill-icon"></i>
+                                <span>10,000+ App Downloads</span>
+                            </div>
+                            <div class="skill-item">
+                                <i class="fas fa-star skill-icon"></i>
+                                <span>4.5+ Average App Rating</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Interactive Timeline -->
+                <div class="card" style="margin-top: 2rem;">
+                    <h3><i class="fas fa-clock"></i> Career Timeline</h3>
+                    <div class="timeline" style="margin-top: 2rem;">
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2020</div>
+                                <div class="timeline-title">Started University</div>
+                                <p>Began Bachelor's in Management Information Systems</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2022</div>
+                                <div class="timeline-title">First Professional Role</div>
+                                <p>Joined Saudi Gulf Group as Software Engineer</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2023</div>
+                                <div class="timeline-title">Flutter Coach</div>
+                                <p>Started mentoring students at GDSC</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-content">
+                                <div class="timeline-date">2024</div>
+                                <div class="timeline-title">Graduation & Teaching</div>
+                                <p>Graduated with Honors, became Teaching Assistant</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="section">
+            <div class="container">
+                <h2 class="section-title">Get In Touch</h2>
+                <div class="contact-grid">
+                    <div class="contact-info">
+                        <div class="contact-item animate-on-scroll">
+                            <i class="fas fa-envelope contact-icon"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <p>abdalluh.essam@outlook.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item animate-on-scroll">
+                            <i class="fas fa-phone contact-icon"></i>
+                            <div>
+                                <h4>Phone</h4>
+                                <p>+201000615819</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item animate-on-scroll">
+                            <i class="fas fa-map-marker-alt contact-icon"></i>
+                            <div>
+                                <h4>Location</h4>
+                                <p>El Shorouk City, Cairo, Egypt</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item animate-on-scroll">
+                            <i class="fab fa-linkedin contact-icon"></i>
+                            <div>
+                                <h4>LinkedIn</h4>
+                                <p>linkedin.com/in/abdalluh-essam</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item animate-on-scroll">
+                            <i class="fab fa-github contact-icon"></i>
+                            <div>
+                                <h4>GitHub</h4>
+                                <p>github.com/AbdalluhEssam</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item animate-on-scroll">
+                            <i class="fas fa-globe contact-icon"></i>
+                            <div>
+                                <h4>Website</h4>
+                                <p>abdalluh-essam.com</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card animate-on-scroll">
+                        <h3><i class="fas fa-paper-plane"></i> Send Message</h3>
+                        <form id="contactForm" style="margin-top: 1.5rem;">
+                            <div class="form-group">
+                                <label for="name">Name</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="subject">Subject</label>
+                                <input type="text" id="subject" name="subject" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="message">Message</label>
+                                <textarea id="message" name="message" required placeholder="Tell me about your project or inquiry..."></textarea>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                                <i class="fas fa-paper-plane"></i>
+                                Send Message
+                                <div class="loader" id="formLoader"></div>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Theme Toggle
+        const themeToggle = document.querySelector('.theme-toggle');
+        const body = document.body;
+        const themeIcon = themeToggle.querySelector('i');
+
+        // Check for saved theme preference or default to 'light'
+        const currentTheme = localStorage.getItem('theme') || 'light';
+        body.setAttribute('data-theme', currentTheme);
+        updateThemeIcon(currentTheme);
+
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            updateThemeIcon(newTheme);
+        });
+
+        function updateThemeIcon(theme) {
+            themeIcon.className = theme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        // Navigation
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('.section');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        const navLinksContainer = document.querySelector('.nav-links');
+
+        // Mobile menu toggle
+        mobileMenu.addEventListener('click', () => {
+            navLinksContainer.classList.toggle('show');
+            const icon = mobileMenu.querySelector('i');
+            icon.className = navLinksContainer.classList.contains('show') ? 'fas fa-times' : 'fas fa-bars';
+        });
+
+        // Navigation functionality
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                showSection(targetId);
+                
+                // Update active nav link
+                navLinks.forEach(nl => nl.classList.remove('active'));
+                link.classList.add('active');
+                
+                // Close mobile menu
+                navLinksContainer.classList.remove('show');
+                mobileMenu.querySelector('i').className = 'fas fa-bars';
+            });
+        });
+
+        function showSection(sectionId) {
+            sections.forEach(section => {
+                section.classList.remove('active');
+                if (section.id === sectionId) {
+                    section.classList.add('active');
+                    // Trigger animations for the active section
+                    triggerAnimations(section);
+                }
+            });
+        }
+
+        // Animation on scroll
+        function triggerAnimations(section) {
+            const animateElements = section.querySelectorAll('.animate-on-scroll');
+            animateElements.forEach((element, index) => {
+                setTimeout(() => {
+                    element.classList.add('animate');
+                }, index * 200);
+            });
+        }
+
+        // Trigger animations for home section on load
+        document.addEventListener('DOMContentLoaded', () => {
+            const homeSection = document.getElementById('home');
+            triggerAnimations(homeSection);
+        });
+
+        // Contact Form
+        const contactForm = document.getElementById('contactForm');
+        const formLoader = document.getElementById('formLoader');
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            // Show loader
+            formLoader.style.display = 'inline-block';
+            
+            // Get form data
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData);
+            
+            // Simulate form submission
+            setTimeout(() => {
+                // Create mailto link
+                const subject = encodeURIComponent(data.subject);
+                const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\nMessage:\n${data.message}`);
+                const mailtoLink = `mailto:abdalluh.essam@outlook.com?subject=${subject}&body=${body}`;
+                
+                // Open email client
+                window.location.href = mailtoLink;
+                
+                // Hide loader
+                formLoader.style.display = 'none';
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Show success message
+                alert('Email client opened! Thank you for your message.');
+            }, 1500);
+        });
+
+        // Download CV Function
+        function downloadCV() {
+            // Create a temporary link to simulate CV download
+            const link = document.createElement('a');
+            link.href = '#';
+            link.download = 'Abdalluh_Essam_CV.pdf';
+            
+            // Show download notification
+            alert('CV download started! (This is a demo - please contact me for the actual CV)');
+            
+            // In a real implementation, you would link to an actual PDF file:
+            // link.href = 'path/to/Abdalluh_Essam_CV.pdf';
+            // link.click();
+        }
+
+        // Smooth scrolling for internal links
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('a[href^="#"]')) {
+                e.preventDefault();
+                const targetId = e.target.getAttribute('href').substring(1);
+                if (targetId && document.getElementById(targetId)) {
+                    showSection(targetId);
+                    
+                    // Update active nav link
+                    navLinks.forEach(nl => nl.classList.remove('active'));
+                    const correspondingNavLink = document.querySelector(`a[href="#${targetId}"]`);
+                    if (correspondingNavLink) {
+                        correspondingNavLink.classList.add('active');
+                    }
+                }
+            }
+        });
+
+        // Add some interactive features
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add typing animation to hero title
+            const heroTitle = document.querySelector('.hero-content h1');
+            if (heroTitle) {
+                heroTitle.style.opacity = '0';
+                setTimeout(() => {
+                    heroTitle.style.opacity = '1';
+                    heroTitle.style.animation = 'fadeIn 1s ease-in';
+                }, 500);
+            }
+
+            // Add stagger animation to social links
+            const socialLinks = document.querySelectorAll('.social-links a');
+            socialLinks.forEach((link, index) => {
+                link.style.animationDelay = `${index * 0.1}s`;
+                link.classList.add('animate-on-scroll', 'animate');
+            });
+
+            // Add hover effects to project cards
+            const projectCards = document.querySelectorAll('.project-card');
+            projectCards.forEach(card => {
+                card.addEventListener('mouseenter', () => {
+                    card.style.transform = 'translateY(-15px) scale(1.02)';
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'translateY(-10px) scale(1)';
+                });
+            });
+        });
+
+        // Performance optimization: Lazy load animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all animate-on-scroll elements
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
